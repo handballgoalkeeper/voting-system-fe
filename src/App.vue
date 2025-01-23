@@ -1,5 +1,5 @@
 <template>
-  App
+  <router-view />
 </template>
 
 <script>
