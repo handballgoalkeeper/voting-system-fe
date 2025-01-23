@@ -23,10 +23,7 @@
                     { 'active': useRoute().path === navItem.path }
                 ]"
             >
-              <i :class="[
-                  'bi',
-                  navItem.icon
-              ]"></i>
+              <BootstrapIconsComponent :iconClass="navItem.icon" />
               {{ navItem.name }}
             </router-link>
 
@@ -45,10 +42,7 @@
                   aria-haspopup="true"
                   aria-expanded="false"
               >
-                <i :class="[
-                  'bi',
-                  navItem.icon
-                ]"></i>
+                <BootstrapIconsComponent :iconClass="navItem.icon" />
                 {{ navItem.name }}
               </a>
               <div class="dropdown-menu p-0" :aria-labelledby="navItem.name.toLowerCase() + 'Dropdown'">
@@ -61,10 +55,7 @@
                         { 'active': useRoute().path === subNavItem.path }
                     ]"
                 >
-                  <i :class="[
-                    'bi',
-                    subNavItem.icon
-                  ]"></i>
+                  <BootstrapIconsComponent :iconClass="subNavItem.icon" />
                   {{ subNavItem.name }}
                 </RouterLink>
               </div>
@@ -80,9 +71,13 @@
 <script>
   import {useRoute} from "vue-router";
   import mainNavigationItems from "@/configs/mainNavigationConfig";
+  import BootstrapIconsComponent from "@/components/partials/BootstrapIconsComponent.vue";
 
   export default {
     name: "MainNavigationComponent",
+    components: {
+      BootstrapIconsComponent
+    },
     methods: {
       useRoute
     },
