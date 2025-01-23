@@ -78,7 +78,8 @@
 </template>
 
 <script>
-import {useRoute} from "vue-router";
+  import {useRoute} from "vue-router";
+  import mainNavigationItems from "@/configs/mainNavigationConfig";
 
   export default {
     name: "MainNavigationComponent",
@@ -87,38 +88,7 @@ import {useRoute} from "vue-router";
     },
     data() {
       return {
-        // TODO: Move to some king of config file?!
-        navItems: [
-          {
-            name: "Home",
-            path: "/",
-            icon: "bi-house",
-            subNavItems: undefined,
-          },
-          {
-            name: "Elections",
-            path: "/elections",
-            icon: "bi-check2-circle",
-            subNavItems: undefined,
-          },
-          {
-            name: "Dictionaries",
-            path: undefined,
-            icon: "bi-journal-text",
-            subNavItems: [
-              {
-                name: "Countries",
-                path: "/countries",
-                icon: "bi-geo-alt",
-              },
-              {
-                name: "Election types",
-                path: "/election_types",
-                icon: "bi-archive",
-              }
-            ],
-          }
-        ],
+        navItems: mainNavigationItems,
       };
     },
   }
