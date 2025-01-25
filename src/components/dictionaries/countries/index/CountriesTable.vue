@@ -1,0 +1,63 @@
+<template>
+  <div class="table-responsive vh-100 p-o m-0">
+    <table class="table table-striped">
+      <caption>List of countries</caption>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Total voters</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(country, index) in countries" :key="country.id">
+          <th>{{ index + 1 }}</th>
+          <td>{{ country.name }}</td>
+          <td>{{ country.total_voters.toLocaleString() }}</td>
+          <td>
+            <ThreeDotsDropdown>
+              <li><a class="dropdown-item" v-on:click="$emit('view', country)">View</a></li>
+              <li><a class="dropdown-item" v-on:click="$emit('modify', country)">Modify</a></li>
+            </ThreeDotsDropdown>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+  import customAxios from "@/utils/customAxios";
+  import ThreeDotsDropdown from "@/components/partials/ThreeDotsDropdown.vue";
+
+  export default {
+    name: "CountriesTable",
+    components: { ThreeDotsDropdown },
+    emits: [
+        'view',
+        'modify'
+    ],
+    data() {
+      return {
+        countriesLoading: true,
+        countries: [],
+        error: "",
+      };
+    },
+    mounted() {
+      customAxios.get('/countries').then(response => {
+        this.countries = response.data;
+      }).catch(() => {
+        this.error = "Something went wrong while retrieving countries, please try again later or contact support.";
+      }).finally(() => {
+        this.countriesLoading = false;
+        this.error = undefined;
+      });
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

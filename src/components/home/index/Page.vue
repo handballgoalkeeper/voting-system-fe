@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import MainNavigationComponent from "@/components/partials/MainNavigationComponent.vue";
+import MainNavigationComponent from "@/components/partials/navigation/MainNavigationComponent.vue";
   export default {
     name: "HomeIndexPageComponent",
     components: {
