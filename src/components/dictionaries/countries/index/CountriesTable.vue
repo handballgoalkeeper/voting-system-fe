@@ -38,6 +38,18 @@
         'view',
         'modify'
     ],
+    methods: {
+      getAllCountries() {
+        customAxios.get('/countries').then(response => {
+          this.countries = response.data;
+        }).catch(() => {
+          this.error = "Something went wrong while retrieving countries, please try again later or contact support.";
+        }).finally(() => {
+          this.countriesLoading = false;
+          this.error = undefined;
+        });
+      },
+    },
     data() {
       return {
         countriesLoading: true,
@@ -46,14 +58,7 @@
       };
     },
     mounted() {
-      customAxios.get('/countries').then(response => {
-        this.countries = response.data;
-      }).catch(() => {
-        this.error = "Something went wrong while retrieving countries, please try again later or contact support.";
-      }).finally(() => {
-        this.countriesLoading = false;
-        this.error = undefined;
-      });
+      this.getAllCountries();
     }
   }
 </script>
