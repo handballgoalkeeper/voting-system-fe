@@ -1,7 +1,19 @@
 <template>
-  <SuccessAlert :text="successMessage" v-on:alert-expired="() => {this.successMessage = undefined;}"/>
-  <ErrorAlert :text="errorMessage" v-on:alert-expired="() => {this.errorMessage = undefined;}" />
+  <SuccessAlert :text="successMessage" v-on:alert-expired="() => {this.successMessage = '';}"/>
+  <ErrorAlert :text="errorMessage" v-on:alert-expired="() => {this.errorMessage = '';}" />
   <MainNavigationComponent ref="navBar"/>
+  <div class="container-fluid my-2">
+    <button class="btn btn-primary" v-on:click="() => {
+      this.createCountryModalVisible = true;
+    }">Create new country</button>
+    <CreateCountryModal
+        :is-visible="createCountryModalVisible"
+        v-on:update:is-visible="(data) => { this.createCountryModalVisible = data; }"
+        v-on:success="handleCreationSuccess"
+        v-on:error="handleCreationError"
+    />
+  </div>
+  <hr class="p-0 m-0">
   <div class="container">
     <CountriesTable ref="countriesTableComponent" v-on:view="handleView" v-on:modify="handleModify" />
   </div>
@@ -20,10 +32,12 @@
   import MainNavigationComponent from "@/components/partials/navigation/MainNavigationComponent.vue";
   import SuccessAlert from "@/components/partials/alerts/SuccessAlert.vue";
   import ErrorAlert from "@/components/partials/alerts/ErrorAlert.vue";
+  import CreateCountryModal from "@/components/dictionaries/countries/index/CreateCountryModal.vue";
 
   export default {
     name: "CountriesIndexPageComponent",
     components: {
+      CreateCountryModal,
       ErrorAlert,
       SuccessAlert,
       MainNavigationComponent,
@@ -34,8 +48,9 @@
       return {
         countryForModification: {},
         modifyCountryModalVisible: false,
-        successMessage: undefined,
-        errorMessage: undefined,
+        createCountryModalVisible: false,
+        successMessage: '',
+        errorMessage: '',
       };
     },
     methods: {
@@ -50,8 +65,45 @@
         this.$refs.countriesTableComponent.getAllCountries();
         this.successMessage = `Successfully changed country data.`;
       },
-      handleModificationError() {
-        this.errorMessage = 'Something went wrong, please try again or contact support.';
+      handleModificationError(response) {
+        if (response.status === 422) {
+          this.errorMessage = this.formatErrorMessage(response.response.data.errors, response.status);
+        }
+        else if (response.status === 400) {
+          this.errorMessage = this.formatErrorMessage(response.response.data.errors, response.status);
+        }
+        else {
+          this.errorMessage = 'Something went wrong, please try again or contact support.';
+        }
+      },
+      handleCreationSuccess() {
+        this.$refs.countriesTableComponent.getAllCountries();
+        this.successMessage = 'Successfully created new country.'
+      },
+      handleCreationError(response) {
+        if (response.status === 422) {
+          this.errorMessage = this.formatErrorMessage(response.response.data.errors, response.status);
+        }
+        else {
+          this.errorMessage = 'Something went wrong, please try again or contact support.';
+        }
+      },
+      formatErrorMessage(errors, status) {
+        let message = '';
+
+        if (status === 422) {
+          Object.keys(errors).forEach(key => {
+            message += errors[key] + '\n';
+          });
+        }
+        else {
+          errors.forEach(error => {
+            message += error + '\n';
+          });
+        }
+
+        return message;
+
       },
     },
   }
