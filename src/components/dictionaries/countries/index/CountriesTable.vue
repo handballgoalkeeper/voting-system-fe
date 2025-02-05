@@ -41,7 +41,7 @@
     methods: {
       getAllCountries() {
         findAll().then(result => {
-          this.countries = result;
+          this.countries = result.data;
         }).catch(() => {
           this.error = "Something went wrong while retrieving countries, please try again later or contact support.";
         }).finally(() => {

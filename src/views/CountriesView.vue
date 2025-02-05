@@ -27,12 +27,13 @@
 </template>
 
 <script>
+
+  import CreateCountryModal from "@/components/dictionaries/countries/index/CreateCountryModal.vue";
+  import ErrorAlert from "@/components/partials/alerts/ErrorAlert.vue";
+  import SuccessAlert from "@/components/partials/alerts/SuccessAlert.vue";
+  import MainNavigationComponent from "@/components/partials/navigation/MainNavigationComponent.vue";
   import CountriesTable from "@/components/dictionaries/countries/index/CountriesTable.vue";
   import ModifyCountryModal from "@/components/dictionaries/countries/index/ModifyCountryModal.vue";
-  import MainNavigationComponent from "@/components/partials/navigation/MainNavigationComponent.vue";
-  import SuccessAlert from "@/components/partials/alerts/SuccessAlert.vue";
-  import ErrorAlert from "@/components/partials/alerts/ErrorAlert.vue";
-  import CreateCountryModal from "@/components/dictionaries/countries/index/CreateCountryModal.vue";
 
   export default {
     name: "CountriesView",
