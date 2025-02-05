@@ -35,7 +35,7 @@
   import CreateCountryModal from "@/components/dictionaries/countries/index/CreateCountryModal.vue";
 
   export default {
-    name: "CountriesIndexPageComponent",
+    name: "CountriesView",
     components: {
       CreateCountryModal,
       ErrorAlert,

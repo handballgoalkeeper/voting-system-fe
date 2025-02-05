@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeIndexPageComponent from "./components/home/index/Page.vue";
-import CountriesIndexPageComponent from "./components/dictionaries/countries/index/Page.vue";
-import ElectionsIndexPage from "./components/elections/index/Page.vue";
-import ElectionTypesIndexPage from "./components/dictionaries/election_types/index/Page.vue";
+import CountriesView from "@/views/CountriesView.vue";
+import ElectionTypesView from "@/views/ElectionTypesView.vue";
+import ElectionsView from "@/views/ElectionsView.vue";
+import HomepageView from "@/views/HomepageView.vue";
 
 const routes = [
-    { path: '/', component: HomeIndexPageComponent },
-    { path: '/countries', component: CountriesIndexPageComponent },
-    { path: '/elections', component: ElectionsIndexPage },
-    { path: '/election_types', component: ElectionTypesIndexPage },
+    { path: '/', name: 'Home', component: HomepageView },
+    { path: '/countries', name: 'Countries', component: CountriesView },
+    { path: '/elections', name: 'Elections', component: ElectionsView },
+    { path: '/election_types', name: 'ElectionTypes', component: ElectionTypesView },
 ];
 
 const router = createRouter({

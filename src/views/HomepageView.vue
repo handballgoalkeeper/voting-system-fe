@@ -6,7 +6,7 @@
 <script>
 import MainNavigationComponent from "@/components/partials/navigation/MainNavigationComponent.vue";
   export default {
-    name: "HomeIndexPageComponent",
+    name: "HomepageView",
     components: {
       MainNavigationComponent
     },

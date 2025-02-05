@@ -7,7 +7,7 @@
   import MainNavigationComponent from "@/components/partials/navigation/MainNavigationComponent.vue";
 
   export default {
-    name: "ElectionTypesIndexPage",
+    name: "ElectionTypesView",
     components: {
       MainNavigationComponent
     }
