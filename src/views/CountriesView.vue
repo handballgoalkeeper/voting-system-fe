@@ -24,6 +24,11 @@
       v-on:success="handleModificationSuccess"
       v-on:error="handleModificationError"
   />
+  <ViewCountryModel
+      :country="countryForDisplay"
+      :is-visible="viewCountryModalVisible"
+      v-on:update:is-visible="(data) => { this.viewCountryModalVisible = data; }"
+  />
 </template>
 
 <script>
@@ -34,6 +39,7 @@
   import MainNavigationComponent from "@/components/partials/navigation/MainNavigationComponent.vue";
   import CountriesTable from "@/components/dictionaries/countries/index/CountriesTable.vue";
   import ModifyCountryModal from "@/components/dictionaries/countries/index/ModifyCountryModal.vue";
+  import ViewCountryModel from "@/components/dictionaries/countries/index/ViewCountryModel.vue";
 
   export default {
     name: "CountriesView",
@@ -43,20 +49,24 @@
       SuccessAlert,
       MainNavigationComponent,
       CountriesTable,
-      ModifyCountryModal
+      ModifyCountryModal,
+      ViewCountryModel
     },
     data() {
       return {
         countryForModification: {},
+        countryForDisplay: {},
         modifyCountryModalVisible: false,
         createCountryModalVisible: false,
+        viewCountryModalVisible: false,
         successMessage: '',
         errorMessage: '',
       };
     },
     methods: {
       handleView(country) {
-        console.log(country);
+        this.countryForDisplay = {...country};
+        this.viewCountryModalVisible = true;
       },
       handleModify(country) {
         this.countryForModification = {...country};
