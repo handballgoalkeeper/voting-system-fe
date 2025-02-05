@@ -28,8 +28,8 @@
 </template>
 
 <script>
-  import customAxios from "@/utils/customAxios";
   import ThreeDotsDropdown from "@/components/partials/ThreeDotsDropdown.vue";
+  import  { findAll } from "@/services/countryService";
 
   export default {
     name: "CountriesTable",
@@ -40,8 +40,8 @@
     ],
     methods: {
       getAllCountries() {
-        customAxios.get('/countries').then(response => {
-          this.countries = response.data;
+        findAll().then(result => {
+          this.countries = result;
         }).catch(() => {
           this.error = "Something went wrong while retrieving countries, please try again later or contact support.";
         }).finally(() => {
