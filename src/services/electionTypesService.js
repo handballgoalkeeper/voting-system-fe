@@ -10,7 +10,12 @@ const update = async (electionType) => {
     return customAxios.put(ELECTION_TYPES_URL, electionType);
 };
 
+const create = async (electionType) => {
+    return customAxios.post(ELECTION_TYPES_URL, electionType);
+};
+
 export {
     findAll,
-    update
+    update,
+    create
 };

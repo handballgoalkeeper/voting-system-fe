@@ -6,6 +6,7 @@
       <tr>
         <th>#</th>
         <th>Name</th>
+        <th>Description</th>
         <th>Country</th>
         <th></th>
       </tr>
@@ -14,6 +15,7 @@
       <tr v-for="(electionType, index) in electionTypes" :key="electionType.id">
         <th>{{ index + 1 }}</th>
         <td>{{ electionType.name }}</td>
+        <td>{{ electionType.description }}</td>
         <td>{{ electionType.country.name }}</td>
         <td>
           <ThreeDotsDropdown>

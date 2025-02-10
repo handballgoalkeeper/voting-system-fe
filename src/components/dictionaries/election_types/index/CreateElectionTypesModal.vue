@@ -1,51 +1,79 @@
 <template>
   <StaticBackdropModal
-      :is-visible="createCountryModalVisible"
-      title="Create new country"
+      :is-visible="createElectionTypeModalVisible"
+      title="Create new election type"
       v-on:update:is-visible="(data) => {
-        this.createCountryModalVisible = data;
+        this.createElectionTypeModalVisible = data;
       }"
   >
     <template v-slot:body>
       <form>
         <div class="form-group">
-          <label for="countryNameInput">Name</label>
+          <label for="electionTypeNameInput">Name</label>
           <input
               type="text"
               class="form-control"
-              id="countryNameInput"
-              aria-describedby="countryNameHelp"
-              ref="nameInput"
+              id="electionTypeNameInput"
+              aria-describedby="electionTypeNameHelp"
+              v-model="newElectionType.name"
+              required
           >
-          <small id="emailHelp" class="form-text text-muted">New country name, must be unique.</small>
+          <small id="electionTypeNameHelp" class="form-text text-muted">Election type name.</small>
         </div>
         <div class="form-group">
-          <label for="countryTotalVotersInput">Total voters</label>
+          <label for="electionTypeDescriptionInput">Description</label>
+          <input
+              type="text"
+              class="form-control"
+              id="electionTypeDescriptionInput"
+              aria-describedby="electionTypeDescriptionHelp"
+              v-model="newElectionType.description"
+          >
+          <small id="electionTypeNameHelp" class="form-text text-muted">Election type description.</small>
+        </div>
+        <div>
+          <label for="countrySelect">Country</label>
+          <select
+            v-model="newElectionType.country_id"
+            class="form-select"
+            aria-describedby="electionCountryHelp"
+            required
+          >
+            <option selected :value="undefined">Select country...</option>
+            <option v-for="(country, index) in countries" :key="index" :value="country.id">{{ country.name }}</option>
+          </select>
+          <small id="electionTypeCountryHelp" class="form-text text-muted">
+            Country to which election type belongs.
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="electionTypeRequiredStageCountInput">Stage count</label>
           <input
               type="number"
-              min="0"
               class="form-control"
-              id="countryTotalVotersInput"
-              aria-describedby="countryTotalVotersHelp"
-              ref="totalVotersInput"
+              id="electionTypeRequiredStageCountInput"
+              aria-describedby="electionTypeDescriptionHelp"
+              v-model="newElectionType.required_stages_count"
+              required
           >
-          <small id="countryTotalVotersHelp" class="form-text text-muted">Total number of voters for the country.</small>
+          <small id="electionTypeNameHelp" class="form-text text-muted">Election type stage count, ready to be modified.</small>
         </div>
       </form>
     </template>
     <template v-slot:footer>
       <button type="button" class="btn btn-success me-2" v-on:click="saveData">Save</button>
-      <button type="button" class="btn btn-primary" v-on:click="createCountryModalVisible = false;">Close</button>
+      <button type="button" class="btn btn-primary" v-on:click="createElectionTypeModalVisible = false">Close</button>
     </template>
   </StaticBackdropModal>
 </template>
 
 <script>
   import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
-  import {create} from "@/services/countryService";
+  import {create} from "@/services/electionTypesService";
+  import {findAll} from "@/services/countryService";
 
   export default {
-    name: "CreateCountryModal",
+    name: "CreateElectionTypeModal",
     components: {
       StaticBackdropModal
     },
@@ -55,41 +83,49 @@
         required: true,
       }
     },
+    mounted() {
+      findAll().then(response => {
+        this.countries = response.data;
+      }).catch(error => this.$emit('error', error));
+    },
     emits: [
-      'update:isVisible',
-      'success',
-      'error'
+        'update:isVisible',
+        'success',
+        'error'
     ],
     watch: {
       isVisible(newValue) {
-        this.createCountryModalVisible = newValue;
+        this.createElectionTypeModalVisible = newValue;
       },
-      createCountryModalVisible(newValue) {
-        this.createCountryModalVisible = newValue;
+      createElectionTypeModalVisible(newValue) {
+        this.createElectionTypeModalVisible = newValue;
         this.$emit('update:isVisible', newValue);
-      },
+      }
     },
     data() {
       return {
-        createCountryModalVisible: this.$props.isVisible,
+        createElectionTypeModalVisible: this.$props.isVisible,
+        newElectionType: {
+          name: undefined,
+          description: undefined,
+          country_id: undefined,
+          required_stages_count: undefined,
+        },
+        countries: [],
       };
     },
     methods: {
       saveData() {
-        let newCountry = {
-          name: this.$refs.nameInput.value,
-          total_voters: this.$refs.totalVotersInput.value
-        };
-        create(newCountry).then(response => {
+        create(this.newElectionType).then(response => {
           this.$emit('success', response);
         }).catch(error => {
           this.$emit('error', error)
         }).finally(() => {
-          this.createCountryModalVisible = false;
+          this.createElectionTypeModalVisible = false;
         });
       },
     },
-};
+  };
 </script>
 
 <style scoped>
