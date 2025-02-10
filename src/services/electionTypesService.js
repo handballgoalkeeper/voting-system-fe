@@ -14,8 +14,14 @@ const create = async (electionType) => {
     return customAxios.post(ELECTION_TYPES_URL, electionType);
 };
 
+const findAllByCountryId = async (countryId) => {
+    let allElectionTypes = (await findAll()).data;
+    return allElectionTypes.filter((electionType) => electionType.country.id === countryId);
+};
+
 export {
     findAll,
     update,
-    create
+    create,
+    findAllByCountryId
 };

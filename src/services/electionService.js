@@ -6,4 +6,8 @@ const findAll = async () => {
     return customAxios.get(ELECTIONS_URL);
 };
 
-export { findAll };
+const create = async (election) => {
+    return customAxios.post(ELECTIONS_URL, election);
+};
+
+export { findAll, create };

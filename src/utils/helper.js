@@ -1,5 +1,5 @@
 const utcToLocalDateTime = (utcTime) => {
-    return new Date(utcTime).toLocaleDateString(undefined, {
+    return (utcTime !== null) ? new Date(utcTime).toLocaleDateString(undefined, {
         weekday: 'short',
         year: 'numeric',
         month: 'short',
@@ -8,7 +8,7 @@ const utcToLocalDateTime = (utcTime) => {
         minute: '2-digit',
         second: '2-digit',
         hour12: true
-    });
+    }) : null;
 }
 
 const formatErrorMessage = (errors, status) => {
