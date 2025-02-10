@@ -42,7 +42,7 @@
 
 <script>
   import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
-  import customAxios from "@/utils/customAxios";
+  import {update} from "@/services/countryService";
 
   export default {
     name: "ModifyCountryModal",
@@ -84,7 +84,7 @@
     },
     methods: {
       saveData() {
-        customAxios.put('/countries', this.countryForModification).then(response => {
+        update(this.countryForModification).then(response => {
           this.$emit('success', response);
         }).catch(error => {
           this.$emit('error', error)

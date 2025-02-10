@@ -10,4 +10,8 @@ const create = async (newCountry) => {
     return customAxios.post(COUNTRIES_PATH, newCountry);
 }
 
-export { findAll, create};
+const update = async (country) => {
+    return customAxios.put(COUNTRIES_PATH, country);
+}
+
+export { findAll, create, update };

@@ -22,6 +22,9 @@
       handleEdit(data) {
         console.log(data);
       }
+    },
+    mounted() {
+      document.title = process.env.VUE_APP_TITLE + ' | Elections';
     }
   }
 </script>

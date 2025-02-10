@@ -6,6 +6,11 @@ const findAll = async () => {
     return customAxios.get(ELECTION_TYPES_URL);
 };
 
+const update = async (electionType) => {
+    return customAxios.put(ELECTION_TYPES_URL, electionType);
+};
+
 export {
-    findAll
+    findAll,
+    update
 };

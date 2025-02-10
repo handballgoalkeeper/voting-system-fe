@@ -40,6 +40,7 @@
   import CountriesTable from "@/components/dictionaries/countries/index/CountriesTable.vue";
   import ModifyCountryModal from "@/components/dictionaries/countries/index/ModifyCountryModal.vue";
   import ViewCountryModel from "@/components/dictionaries/countries/index/ViewCountryModel.vue";
+  import {formatErrorMessage} from "@/utils/helper";
 
   export default {
     name: "CountriesView",
@@ -63,6 +64,9 @@
         errorMessage: '',
       };
     },
+    mounted() {
+      document.title = process.env.VUE_APP_TITLE + ' | Countries';
+    },
     methods: {
       handleView(country) {
         this.countryForDisplay = {...country};
@@ -78,10 +82,10 @@
       },
       handleModificationError(response) {
         if (response.status === 422) {
-          this.errorMessage = this.formatErrorMessage(response.response.data.errors, response.status);
+          this.errorMessage = formatErrorMessage(response.response.data.errors, response.status);
         }
         else if (response.status === 400) {
-          this.errorMessage = this.formatErrorMessage(response.response.data.errors, response.status);
+          this.errorMessage = formatErrorMessage(response.response.data.errors, response.status);
         }
         else {
           this.errorMessage = 'Something went wrong, please try again or contact support.';
@@ -93,29 +97,12 @@
       },
       handleCreationError(response) {
         if (response.status === 422) {
-          this.errorMessage = this.formatErrorMessage(response.response.data.errors, response.status);
+          this.errorMessage = formatErrorMessage(response.response.data.errors, response.status);
         }
         else {
           this.errorMessage = 'Something went wrong, please try again or contact support.';
         }
-      },
-      formatErrorMessage(errors, status) {
-        let message = '';
-
-        if (status === 422) {
-          Object.keys(errors).forEach(key => {
-            message += errors[key] + '\n';
-          });
-        }
-        else {
-          errors.forEach(error => {
-            message += error + '\n';
-          });
-        }
-
-        return message;
-
-      },
+      }
     },
   }
 </script>

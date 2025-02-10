@@ -34,6 +34,7 @@
 <script>
 import ThreeDotsDropdown from "@/components/partials/ThreeDotsDropdown.vue";
 import {findAll} from "@/services/electionService";
+import {utcToLocalDateTime} from "@/utils/helper";
 
 export default {
   name: "ElectionsTable",
@@ -46,19 +47,9 @@ export default {
     getAllElections() {
       findAll().then(result => {
         this.elections = result.data.map(election => {
-          election.starts_at = new Date(election.starts_at).toLocaleDateString(undefined, {
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
-          });
+          election.starts_at = utcToLocalDateTime(election.starts_at);
           return election;
         });
-        console.log(this.elections);
         this.elections = result.data;
       }).catch(() => {
         this.error = "Something went wrong while retrieving elections, please try again later or contact support.";

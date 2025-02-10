@@ -33,7 +33,9 @@
 
   export default {
     name: "ElectionTypesTable",
-    components: { ThreeDotsDropdown },
+    components: {
+      ThreeDotsDropdown
+    },
     emits: [
       'view',
       'modify'
