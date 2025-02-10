@@ -18,8 +18,7 @@ const formatErrorMessage = (errors, status) => {
         Object.keys(errors).forEach(key => {
             message += errors[key] + '\n';
         });
-    }
-    else {
+    } else {
         errors.forEach(error => {
             message += error + '\n';
         });

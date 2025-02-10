@@ -29,7 +29,8 @@
               aria-describedby="countryTotalVotersHelp"
               ref="totalVotersInput"
           >
-          <small id="countryTotalVotersHelp" class="form-text text-muted">Total number of voters for the country.</small>
+          <small id="countryTotalVotersHelp" class="form-text text-muted">Total number of voters for the
+            country.</small>
         </div>
       </form>
     </template>
@@ -41,54 +42,54 @@
 </template>
 
 <script>
-  import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
-  import {create} from "@/services/countryService";
+import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
+import {create} from "@/services/countryService";
 
-  export default {
-    name: "CreateCountryModal",
-    components: {
-      StaticBackdropModal
+export default {
+  name: "CreateCountryModal",
+  components: {
+    StaticBackdropModal
+  },
+  props: {
+    isVisible: {
+      type: Boolean,
+      required: true,
+    }
+  },
+  emits: [
+    'update:isVisible',
+    'success',
+    'error'
+  ],
+  watch: {
+    isVisible(newValue) {
+      this.createCountryModalVisible = newValue;
     },
-    props: {
-      isVisible: {
-        type: Boolean,
-        required: true,
-      }
+    createCountryModalVisible(newValue) {
+      this.createCountryModalVisible = newValue;
+      this.$emit('update:isVisible', newValue);
     },
-    emits: [
-      'update:isVisible',
-      'success',
-      'error'
-    ],
-    watch: {
-      isVisible(newValue) {
-        this.createCountryModalVisible = newValue;
-      },
-      createCountryModalVisible(newValue) {
-        this.createCountryModalVisible = newValue;
-        this.$emit('update:isVisible', newValue);
-      },
-    },
-    data() {
-      return {
-        createCountryModalVisible: this.$props.isVisible,
+  },
+  data() {
+    return {
+      createCountryModalVisible: this.$props.isVisible,
+    };
+  },
+  methods: {
+    saveData() {
+      let newCountry = {
+        name: this.$refs.nameInput.value,
+        total_voters: this.$refs.totalVotersInput.value
       };
+      create(newCountry).then(response => {
+        this.$emit('success', response);
+      }).catch(error => {
+        this.$emit('error', error)
+      }).finally(() => {
+        this.createCountryModalVisible = false;
+      });
     },
-    methods: {
-      saveData() {
-        let newCountry = {
-          name: this.$refs.nameInput.value,
-          total_voters: this.$refs.totalVotersInput.value
-        };
-        create(newCountry).then(response => {
-          this.$emit('success', response);
-        }).catch(error => {
-          this.$emit('error', error)
-        }).finally(() => {
-          this.createCountryModalVisible = false;
-        });
-      },
-    },
+  },
 };
 </script>
 

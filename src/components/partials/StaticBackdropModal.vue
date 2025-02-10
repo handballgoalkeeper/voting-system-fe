@@ -29,75 +29,76 @@
 </template>
 
 <script>
-  import BootstrapIconsComponent from "@/components/partials/BootstrapIconsComponent.vue";
+import BootstrapIconsComponent from "@/components/partials/BootstrapIconsComponent.vue";
 
-  export default {
-    name: "StaticBackdropModal",
-    components: {
-      BootstrapIconsComponent
+export default {
+  name: "StaticBackdropModal",
+  components: {
+    BootstrapIconsComponent
+  },
+  emits: ["update:isVisible"],
+  props: {
+    isVisible: {
+      type: Boolean,
+      required: true,
     },
-    emits: ["update:isVisible"],
-    props: {
-      isVisible: {
-        type: Boolean,
-        required: true,
-      },
-      title: {
-        type: String,
-        required: true,
-      },
+    title: {
+      type: String,
+      required: true,
     },
-    watch: {
-      isVisible(newValue) {
-        this.visible = newValue;
-      },
-      visible(newValue) {
-        this.visible = newValue;
-        this.$emit("update:isVisible", newValue);
-      },
+  },
+  watch: {
+    isVisible(newValue) {
+      this.visible = newValue;
     },
-    data() {
-      return {
-        visible: this.$props.isVisible,
-      }
+    visible(newValue) {
+      this.visible = newValue;
+      this.$emit("update:isVisible", newValue);
     },
-  };
+  },
+  data() {
+    return {
+      visible: this.$props.isVisible,
+    }
+  },
+};
 </script>
 
 <style scoped>
-  .custom-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 10000;
-  }
-  .custom-modal-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-  }
+.custom-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+}
 
+.custom-modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.custom-modal {
+  height: auto;
+  width: 40%;
+  z-index: 100001;
+}
+
+@media (max-width: 767px) {
   .custom-modal {
-    height: auto;
-    width: 40%;
-    z-index: 100001;
+    width: 95%;
   }
+}
 
-  @media (max-width: 767px) {
-    .custom-modal {
-      width: 95%;
-    }
+@media (min-width: 768px) and (max-width: 991px) {
+  .custom-modal {
+    width: 70%;
   }
-
-  @media (min-width: 768px) and (max-width: 991px) {
-    .custom-modal {
-      width: 70%;
-    }
-  }
+}
 </style>

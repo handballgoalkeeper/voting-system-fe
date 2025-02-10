@@ -30,41 +30,41 @@
 </template>
 
 <script>
-  import ThreeDotsDropdown from "@/components/partials/ThreeDotsDropdown.vue";
-  import {findAll} from "@/services/electionTypesService";
+import ThreeDotsDropdown from "@/components/partials/ThreeDotsDropdown.vue";
+import {findAll} from "@/services/electionTypesService";
 
-  export default {
-    name: "ElectionTypesTable",
-    components: {
-      ThreeDotsDropdown
+export default {
+  name: "ElectionTypesTable",
+  components: {
+    ThreeDotsDropdown
+  },
+  emits: [
+    'view',
+    'modify'
+  ],
+  methods: {
+    getAllElectionTypes() {
+      findAll().then(result => {
+        this.electionTypes = result.data;
+      }).catch(() => {
+        this.error = "Something went wrong while retrieving election types, please try again later or contact support.";
+      }).finally(() => {
+        this.electionTypesLoading = false;
+        this.error = undefined;
+      });
     },
-    emits: [
-      'view',
-      'modify'
-    ],
-    methods: {
-      getAllElectionTypes() {
-        findAll().then(result => {
-          this.electionTypes = result.data;
-        }).catch(() => {
-          this.error = "Something went wrong while retrieving election types, please try again later or contact support.";
-        }).finally(() => {
-          this.electionTypesLoading = false;
-          this.error = undefined;
-        });
-      },
-    },
-    data() {
-      return {
-        electionTypesLoading: true,
-        electionTypes: [],
-        error: "",
-      };
-    },
-    mounted() {
-      this.getAllElectionTypes();
-    }
+  },
+  data() {
+    return {
+      electionTypesLoading: true,
+      electionTypes: [],
+      error: "",
+    };
+  },
+  mounted() {
+    this.getAllElectionTypes();
   }
+}
 </script>
 
 <style scoped>

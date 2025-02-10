@@ -40,47 +40,47 @@
 </template>
 
 <script>
-  import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
+import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
 
-  export default {
-    name: "ViewCountryModal",
-    components: {
-      StaticBackdropModal
+export default {
+  name: "ViewCountryModal",
+  components: {
+    StaticBackdropModal
+  },
+  props: {
+    isVisible: {
+      type: Boolean,
+      required: true,
     },
-    props: {
-      isVisible: {
-        type: Boolean,
-        required: true,
-      },
-      country: {
-        type: Object,
-        required: true,
-      }
+    country: {
+      type: Object,
+      required: true,
+    }
+  },
+  emits: [
+    'update:isVisible',
+    'success',
+    'error'
+  ],
+  watch: {
+    isVisible(newValue) {
+      this.modifyCountryModalVisible = newValue;
     },
-    emits: [
-        'update:isVisible',
-        'success',
-        'error'
-    ],
-    watch: {
-      isVisible(newValue) {
-        this.modifyCountryModalVisible = newValue;
-      },
-      country(newValue) {
-        this.countryForDisplay = {...newValue};
-      },
-      modifyCountryModalVisible(newValue) {
-        this.modifyCountryModalVisible = newValue;
-        this.$emit('update:isVisible', newValue);
-      },
+    country(newValue) {
+      this.countryForDisplay = {...newValue};
     },
-    data() {
-      return {
-        modifyCountryModalVisible: this.$props.isVisible,
-        countryForDisplay: undefined,
-      };
+    modifyCountryModalVisible(newValue) {
+      this.modifyCountryModalVisible = newValue;
+      this.$emit('update:isVisible', newValue);
     },
-  };
+  },
+  data() {
+    return {
+      modifyCountryModalVisible: this.$props.isVisible,
+      countryForDisplay: undefined,
+    };
+  },
+};
 </script>
 
 <style scoped>

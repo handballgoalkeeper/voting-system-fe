@@ -14,4 +14,4 @@ const update = async (country) => {
     return customAxios.put(COUNTRIES_PATH, country);
 }
 
-export { findAll, create, update };
+export {findAll, create, update};

@@ -57,47 +57,47 @@
 </template>
 
 <script>
-  import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
+import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
 
-  export default {
-    name: "ViewElectionTypeModal",
-    components: {
-      StaticBackdropModal
+export default {
+  name: "ViewElectionTypeModal",
+  components: {
+    StaticBackdropModal
+  },
+  props: {
+    isVisible: {
+      type: Boolean,
+      required: true,
     },
-    props: {
-      isVisible: {
-        type: Boolean,
-        required: true,
-      },
-      electionType: {
-        type: Object,
-        required: true,
-      }
+    electionType: {
+      type: Object,
+      required: true,
+    }
+  },
+  emits: [
+    'update:isVisible',
+    'success',
+    'error'
+  ],
+  watch: {
+    isVisible(newValue) {
+      this.modifyElectionTypesVisible = newValue;
     },
-    emits: [
-        'update:isVisible',
-        'success',
-        'error'
-    ],
-    watch: {
-      isVisible(newValue) {
-        this.modifyElectionTypesVisible = newValue;
-      },
-      electionType(newValue) {
-        this.electionTypeForDisplay = {...newValue};
-      },
-      modifyElectionTypesVisible(newValue) {
-        this.modifyElectionTypesVisible = newValue;
-        this.$emit('update:isVisible', newValue);
-      },
+    electionType(newValue) {
+      this.electionTypeForDisplay = {...newValue};
     },
-    data() {
-      return {
-        modifyElectionTypesVisible: this.$props.isVisible,
-        electionTypeForDisplay: undefined,
-      };
+    modifyElectionTypesVisible(newValue) {
+      this.modifyElectionTypesVisible = newValue;
+      this.$emit('update:isVisible', newValue);
     },
-  };
+  },
+  data() {
+    return {
+      modifyElectionTypesVisible: this.$props.isVisible,
+      electionTypeForDisplay: undefined,
+    };
+  },
+};
 </script>
 
 <style scoped>

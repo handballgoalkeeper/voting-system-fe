@@ -38,7 +38,7 @@ import {utcToLocalDateTime} from "@/utils/helper";
 
 export default {
   name: "ElectionsTable",
-  components: { ThreeDotsDropdown },
+  components: {ThreeDotsDropdown},
   emits: [
     'view',
     'modify'

@@ -17,7 +17,8 @@
               aria-describedby="electionTypeNameHelp"
               v-model="electionTypeForModification.name"
           >
-          <small id="electionTypeNameHelp" class="form-text text-muted">Election type name, ready to be modified.</small>
+          <small id="electionTypeNameHelp" class="form-text text-muted">Election type name, ready to be
+            modified.</small>
         </div>
         <div class="form-group">
           <label for="electionTypeDescriptionInput">Description</label>
@@ -28,14 +29,15 @@
               aria-describedby="electionTypeDescriptionHelp"
               v-model="electionTypeForModification.description"
           >
-          <small id="electionTypeNameHelp" class="form-text text-muted">Election type description, ready to be modified.</small>
+          <small id="electionTypeNameHelp" class="form-text text-muted">Election type description, ready to be
+            modified.</small>
         </div>
         <div>
           <label for="countrySelect">Country</label>
           <select
-            v-model="electionTypeForModification.country.id"
-            class="form-select"
-            aria-describedby="electionCountryHelp"
+              v-model="electionTypeForModification.country.id"
+              class="form-select"
+              aria-describedby="electionCountryHelp"
           >
             <option v-for="(country, index) in countries" :key="index" :value="country.id">{{ country.name }}</option>
           </select>
@@ -52,7 +54,8 @@
               aria-describedby="electionTypeDescriptionHelp"
               v-model="electionTypeForModification.required_stages_count"
           >
-          <small id="electionTypeNameHelp" class="form-text text-muted">Election type stage count, ready to be modified.</small>
+          <small id="electionTypeNameHelp" class="form-text text-muted">Election type stage count, ready to be
+            modified.</small>
         </div>
       </form>
     </template>
@@ -64,69 +67,69 @@
 </template>
 
 <script>
-  import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
-  import {update} from "@/services/electionTypesService";
-  import {findAll} from "@/services/countryService";
-  import {adapt} from "@/adapters/countryTypeAdapter";
+import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
+import {update} from "@/services/electionTypesService";
+import {findAll} from "@/services/countryService";
+import {adapt} from "@/adapters/countryTypeAdapter";
 
-  export default {
-    name: "ModifyElectionTypeModal",
-    components: {
-      StaticBackdropModal
+export default {
+  name: "ModifyElectionTypeModal",
+  components: {
+    StaticBackdropModal
+  },
+  props: {
+    isVisible: {
+      type: Boolean,
+      required: true,
     },
-    props: {
-      isVisible: {
-        type: Boolean,
-        required: true,
-      },
-      electionType: {
-        type: Object,
-        required: true,
-      }
+    electionType: {
+      type: Object,
+      required: true,
+    }
+  },
+  mounted() {
+    findAll().then(response => {
+      this.countries = response.data;
+    }).catch(error => {
+      this.$emit('error', error);
+    }).finally(() => this.modifyElectionTypeModalVisible = false);
+  },
+  emits: [
+    'update:isVisible',
+    'success',
+    'error'
+  ],
+  watch: {
+    isVisible(newValue) {
+      this.modifyElectionTypeModalVisible = newValue;
     },
-    mounted() {
-      findAll().then(response => {
-        this.countries = response.data;
+    electionType(newValue) {
+      this.electionTypeForModification = {...newValue};
+    },
+    modifyElectionTypeModalVisible(newValue) {
+      this.modifyElectionTypeModalVisible = newValue;
+      this.$emit('update:isVisible', newValue);
+    }
+  },
+  data() {
+    return {
+      modifyElectionTypeModalVisible: this.$props.isVisible,
+      electionTypeForModification: undefined,
+      countries: [],
+    };
+  },
+  methods: {
+    saveData() {
+      update(adapt(this.electionTypeForModification)).then(response => {
+        this.$emit('success', response);
       }).catch(error => {
-        this.$emit('error', error);
-      }).finally(() => this.modifyElectionTypeModalVisible = false);
+        this.$emit('error', error)
+      }).finally(() => {
+        this.modifyElectionTypeModalVisible = false;
+      });
     },
-    emits: [
-        'update:isVisible',
-        'success',
-        'error'
-    ],
-    watch: {
-      isVisible(newValue) {
-        this.modifyElectionTypeModalVisible = newValue;
-      },
-      electionType(newValue) {
-        this.electionTypeForModification = {...newValue};
-      },
-      modifyElectionTypeModalVisible(newValue) {
-        this.modifyElectionTypeModalVisible = newValue;
-        this.$emit('update:isVisible', newValue);
-      }
-    },
-    data() {
-      return {
-        modifyElectionTypeModalVisible: this.$props.isVisible,
-        electionTypeForModification: undefined,
-        countries: [],
-      };
-    },
-    methods: {
-      saveData() {
-        update(adapt(this.electionTypeForModification)).then(response => {
-          this.$emit('success', response);
-        }).catch(error => {
-          this.$emit('error', error)
-        }).finally(() => {
-          this.modifyElectionTypeModalVisible = false;
-        });
-      },
-    },
-  };
+  },
+};
 </script>
 
 <style scoped>

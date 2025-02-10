@@ -11,9 +11,9 @@
         <div class="form-group">
           <label for="countrySelect">Country</label>
           <select
-            class="form-select"
-            v-model="newElection.country_id"
-            required
+              class="form-select"
+              v-model="newElection.country_id"
+              required
           >
             <option :value="undefined" selected>Please select country...</option>
             <option v-for="(country, index) in countries" :key="index" :value="country.id">{{ country.name }}</option>
@@ -22,12 +22,14 @@
         <div class="form-group" v-if="newElection.country_id !== undefined">
           <label for="electionTypeSelect">Election type</label>
           <select
-            class="form-select"
-            v-model="newElection.election_type_id"
-            required
+              class="form-select"
+              v-model="newElection.election_type_id"
+              required
           >
             <option :value="undefined" selected>Please select election type...</option>
-            <option v-for="(electionType, index) in electionTypes" :key="index" :value="electionType.id">{{ electionType.name }}</option>
+            <option v-for="(electionType, index) in electionTypes" :key="index" :value="electionType.id">
+              {{ electionType.name }}
+            </option>
           </select>
         </div>
       </form>
@@ -40,74 +42,74 @@
 </template>
 
 <script>
-  import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
-  import {create} from "@/services/electionService";
-  import {findAll as findAllCountries} from "@/services/countryService";
-  import {findAllByCountryId} from "@/services/electionTypesService";
+import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
+import {create} from "@/services/electionService";
+import {findAll as findAllCountries} from "@/services/countryService";
+import {findAllByCountryId} from "@/services/electionTypesService";
 
-  export default {
-    name: "CreateElectionModal",
-    components: {
-      StaticBackdropModal
+export default {
+  name: "CreateElectionModal",
+  components: {
+    StaticBackdropModal
+  },
+  props: {
+    isVisible: {
+      type: Boolean,
+      required: true,
+    }
+  },
+  mounted() {
+    findAllCountries().then(response => {
+      this.countries = response.data;
+    }).catch(error => this.$emit('error', error));
+  },
+  emits: [
+    'update:isVisible',
+    'success',
+    'error'
+  ],
+  watch: {
+    isVisible(newValue) {
+      this.createElectionModalVisible = newValue;
     },
-    props: {
-      isVisible: {
-        type: Boolean,
-        required: true,
-      }
+    createElectionModalVisible(newValue) {
+      this.createElectionModalVisible = newValue;
+      this.$emit('update:isVisible', newValue);
     },
-    mounted() {
-      findAllCountries().then(response => {
-        this.countries = response.data;
-      }).catch(error => this.$emit('error', error));
-    },
-    emits: [
-        'update:isVisible',
-        'success',
-        'error'
-    ],
-    watch: {
-      isVisible(newValue) {
-        this.createElectionModalVisible = newValue;
+    newElection: {
+      handler(newValue) {
+        if (newValue.country_id !== undefined) {
+          findAllByCountryId(newValue.country_id)
+              .then(response => this.electionTypes = response)
+              .catch(error => this.$emit('error', error));
+        }
       },
-      createElectionModalVisible(newValue) {
-        this.createElectionModalVisible = newValue;
-        this.$emit('update:isVisible', newValue);
-      },
+      deep: true,
+    }
+  },
+  data() {
+    return {
+      createElectionModalVisible: this.$props.isVisible,
       newElection: {
-        handler(newValue) {
-          if (newValue.country_id !== undefined) {
-            findAllByCountryId(newValue.country_id)
-                .then(response => this.electionTypes = response)
-                .catch(error => this.$emit('error', error));
-          }
-        },
-        deep: true,
-      }
-    },
-    data() {
-      return {
-        createElectionModalVisible: this.$props.isVisible,
-        newElection: {
-          country_id: undefined,
-          election_type_id: undefined,
-        },
-        countries: [],
-        electionTypes: [],
-      };
-    },
-    methods: {
-      saveData() {
-        create(this.newElection).then(response => {
-          this.$emit('success', response);
-        }).catch(error => {
-          this.$emit('error', error)
-        }).finally(() => {
-          this.createElectionModalVisible = false;
-        });
+        country_id: undefined,
+        election_type_id: undefined,
       },
+      countries: [],
+      electionTypes: [],
+    };
+  },
+  methods: {
+    saveData() {
+      create(this.newElection).then(response => {
+        this.$emit('success', response);
+      }).catch(error => {
+        this.$emit('error', error)
+      }).finally(() => {
+        this.createElectionModalVisible = false;
+      });
     },
-  };
+  },
+};
 </script>
 
 <style scoped>

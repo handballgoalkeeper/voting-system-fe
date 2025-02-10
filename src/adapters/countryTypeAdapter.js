@@ -1,4 +1,3 @@
-
 const adapt = (countryTypeObject) => {
     return {
         id: countryTypeObject.id,

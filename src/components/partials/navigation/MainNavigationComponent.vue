@@ -2,7 +2,8 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">Voting System</router-link>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -23,7 +24,7 @@
                     { 'active': useRoute().path === navItem.path }
                 ]"
             >
-              <BootstrapIconsComponent :iconClass="navItem.icon" />
+              <BootstrapIconsComponent :iconClass="navItem.icon"/>
               {{ navItem.name }}
             </router-link>
 
@@ -42,7 +43,7 @@
                   aria-haspopup="true"
                   aria-expanded="false"
               >
-                <BootstrapIconsComponent :iconClass="navItem.icon" />
+                <BootstrapIconsComponent :iconClass="navItem.icon"/>
                 {{ navItem.name }}
               </a>
               <div class="dropdown-menu p-0" :aria-labelledby="navItem.name.toLowerCase() + 'Dropdown'">
@@ -55,7 +56,7 @@
                         { 'active': useRoute().path === subNavItem.path }
                     ]"
                 >
-                  <BootstrapIconsComponent :iconClass="subNavItem.icon" />
+                  <BootstrapIconsComponent :iconClass="subNavItem.icon"/>
                   {{ subNavItem.name }}
                 </RouterLink>
               </div>
@@ -69,24 +70,24 @@
 </template>
 
 <script>
-  import {useRoute} from "vue-router";
-  import mainNavigationItems from "@/configs/mainNavigationConfig";
-  import BootstrapIconsComponent from "@/components/partials/BootstrapIconsComponent.vue";
+import {useRoute} from "vue-router";
+import mainNavigationItems from "@/configs/mainNavigationConfig";
+import BootstrapIconsComponent from "@/components/partials/BootstrapIconsComponent.vue";
 
-  export default {
-    name: "MainNavigationComponent",
-    components: {
-      BootstrapIconsComponent
-    },
-    methods: {
-      useRoute
-    },
-    data() {
-      return {
-        navItems: mainNavigationItems,
-      };
-    },
-  }
+export default {
+  name: "MainNavigationComponent",
+  components: {
+    BootstrapIconsComponent
+  },
+  methods: {
+    useRoute
+  },
+  data() {
+    return {
+      navItems: mainNavigationItems,
+    };
+  },
+}
 </script>
 
 <style scoped>

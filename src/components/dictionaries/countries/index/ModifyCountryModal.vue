@@ -29,7 +29,8 @@
               aria-describedby="countryTotalVotersHelp"
               v-model="countryForModification.total_voters"
           >
-          <small id="countryTotalVotersHelp" class="form-text text-muted">Country total voters count, ready to be modified.</small>
+          <small id="countryTotalVotersHelp" class="form-text text-muted">Country total voters count, ready to be
+            modified.</small>
         </div>
       </form>
     </template>
@@ -41,59 +42,59 @@
 </template>
 
 <script>
-  import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
-  import {update} from "@/services/countryService";
+import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
+import {update} from "@/services/countryService";
 
-  export default {
-    name: "ModifyCountryModal",
-    components: {
-      StaticBackdropModal
+export default {
+  name: "ModifyCountryModal",
+  components: {
+    StaticBackdropModal
+  },
+  props: {
+    isVisible: {
+      type: Boolean,
+      required: true,
     },
-    props: {
-      isVisible: {
-        type: Boolean,
-        required: true,
-      },
-      country: {
-        type: Object,
-        required: true,
-      }
+    country: {
+      type: Object,
+      required: true,
+    }
+  },
+  emits: [
+    'update:isVisible',
+    'success',
+    'error'
+  ],
+  watch: {
+    isVisible(newValue) {
+      this.modifyCountryModalVisible = newValue;
     },
-    emits: [
-        'update:isVisible',
-        'success',
-        'error'
-    ],
-    watch: {
-      isVisible(newValue) {
-        this.modifyCountryModalVisible = newValue;
-      },
-      country(newValue) {
-        this.countryForModification = {...newValue};
-      },
-      modifyCountryModalVisible(newValue) {
-        this.modifyCountryModalVisible = newValue;
-        this.$emit('update:isVisible', newValue);
-      },
+    country(newValue) {
+      this.countryForModification = {...newValue};
     },
-    data() {
-      return {
-        modifyCountryModalVisible: this.$props.isVisible,
-        countryForModification: undefined,
-      };
+    modifyCountryModalVisible(newValue) {
+      this.modifyCountryModalVisible = newValue;
+      this.$emit('update:isVisible', newValue);
     },
-    methods: {
-      saveData() {
-        update(this.countryForModification).then(response => {
-          this.$emit('success', response);
-        }).catch(error => {
-          this.$emit('error', error)
-        }).finally(() => {
-          this.modifyCountryModalVisible = false;
-        });
-      },
+  },
+  data() {
+    return {
+      modifyCountryModalVisible: this.$props.isVisible,
+      countryForModification: undefined,
+    };
+  },
+  methods: {
+    saveData() {
+      update(this.countryForModification).then(response => {
+        this.$emit('success', response);
+      }).catch(error => {
+        this.$emit('error', error)
+      }).finally(() => {
+        this.modifyCountryModalVisible = false;
+      });
     },
-  };
+  },
+};
 </script>
 
 <style scoped>

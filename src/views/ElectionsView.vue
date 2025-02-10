@@ -1,11 +1,11 @@
 <template>
-  <MainNavigationComponent />
+  <MainNavigationComponent/>
   <SuccessAlert :text="successMessage" v-on:alert-expired="() => {this.successMessage = '';}"/>
-  <ErrorAlert :text="errorMessage" v-on:alert-expired="() => {this.errorMessage = '';}" />
+  <ErrorAlert :text="errorMessage" v-on:alert-expired="() => {this.errorMessage = '';}"/>
   <div class="container-fluid my-2">
     <button
-      class="btn btn-primary"
-      v-on:click="createElectionModalVisible = true"
+        class="btn btn-primary"
+        v-on:click="createElectionModalVisible = true"
     >
       Create new election
     </button>
@@ -22,52 +22,51 @@
 </template>
 
 <script>
-  import MainNavigationComponent from "@/components/partials/navigation/MainNavigationComponent.vue";
-  import ElectionsTable from "@/components/elections/index/ElectionsTable.vue";
-  import CreateElectionModal from "@/components/elections/index/CreateElectionModal.vue";
-  import {formatErrorMessage} from "@/utils/helper";
-  import ErrorAlert from "@/components/partials/alerts/ErrorAlert.vue";
-  import SuccessAlert from "@/components/partials/alerts/SuccessAlert.vue";
+import MainNavigationComponent from "@/components/partials/navigation/MainNavigationComponent.vue";
+import ElectionsTable from "@/components/elections/index/ElectionsTable.vue";
+import CreateElectionModal from "@/components/elections/index/CreateElectionModal.vue";
+import {formatErrorMessage} from "@/utils/helper";
+import ErrorAlert from "@/components/partials/alerts/ErrorAlert.vue";
+import SuccessAlert from "@/components/partials/alerts/SuccessAlert.vue";
 
-  export default {
-    name: "ElectionsView",
-    components: {
-      SuccessAlert, ErrorAlert,
-      MainNavigationComponent,
-      ElectionsTable,
-      CreateElectionModal
+export default {
+  name: "ElectionsView",
+  components: {
+    SuccessAlert, ErrorAlert,
+    MainNavigationComponent,
+    ElectionsTable,
+    CreateElectionModal
+  },
+  data() {
+    return {
+      createElectionModalVisible: false,
+      successMessage: '',
+      errorMessage: '',
+    };
+  },
+  methods: {
+    handleView(data) {
+      console.log(data);
     },
-    data() {
-      return {
-        createElectionModalVisible: false,
-        successMessage: '',
-        errorMessage: '',
-      };
+    handleEdit(data) {
+      console.log(data);
     },
-    methods: {
-      handleView(data) {
-        console.log(data);
-      },
-      handleEdit(data) {
-        console.log(data);
-      },
-      handleCreateSuccess() {
-        this.$refs.electionsTableComponent.getAllElections();
-        this.successMessage = 'Successfully created new election.'
-      },
-      handleCreateError(response) {
-        if (response.status === 422) {
-          this.errorMessage = formatErrorMessage(response.response.data.errors, response.status);
-        }
-        else {
-          this.errorMessage = 'Something went wrong, please try again or contact support.';
-        }
+    handleCreateSuccess() {
+      this.$refs.electionsTableComponent.getAllElections();
+      this.successMessage = 'Successfully created new election.'
+    },
+    handleCreateError(response) {
+      if (response.status === 422) {
+        this.errorMessage = formatErrorMessage(response.response.data.errors, response.status);
+      } else {
+        this.errorMessage = 'Something went wrong, please try again or contact support.';
       }
-    },
-    mounted() {
-      document.title = process.env.VUE_APP_TITLE + ' | Elections';
     }
+  },
+  mounted() {
+    document.title = process.env.VUE_APP_TITLE + ' | Elections';
   }
+}
 </script>
 
 <style scoped>

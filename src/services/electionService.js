@@ -10,4 +10,4 @@ const create = async (election) => {
     return customAxios.post(ELECTIONS_URL, election);
 };
 
-export { findAll, create };
+export {findAll, create};

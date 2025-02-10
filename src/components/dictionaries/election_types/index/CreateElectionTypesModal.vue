@@ -34,10 +34,10 @@
         <div>
           <label for="countrySelect">Country</label>
           <select
-            v-model="newElectionType.country_id"
-            class="form-select"
-            aria-describedby="electionCountryHelp"
-            required
+              v-model="newElectionType.country_id"
+              class="form-select"
+              aria-describedby="electionCountryHelp"
+              required
           >
             <option selected :value="undefined">Select country...</option>
             <option v-for="(country, index) in countries" :key="index" :value="country.id">{{ country.name }}</option>
@@ -56,7 +56,8 @@
               v-model="newElectionType.required_stages_count"
               required
           >
-          <small id="electionTypeNameHelp" class="form-text text-muted">Election type stage count, ready to be modified.</small>
+          <small id="electionTypeNameHelp" class="form-text text-muted">Election type stage count, ready to be
+            modified.</small>
         </div>
       </form>
     </template>
@@ -68,64 +69,64 @@
 </template>
 
 <script>
-  import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
-  import {create} from "@/services/electionTypesService";
-  import {findAll} from "@/services/countryService";
+import StaticBackdropModal from "@/components/partials/StaticBackdropModal.vue";
+import {create} from "@/services/electionTypesService";
+import {findAll} from "@/services/countryService";
 
-  export default {
-    name: "CreateElectionTypeModal",
-    components: {
-      StaticBackdropModal
+export default {
+  name: "CreateElectionTypeModal",
+  components: {
+    StaticBackdropModal
+  },
+  props: {
+    isVisible: {
+      type: Boolean,
+      required: true,
+    }
+  },
+  mounted() {
+    findAll().then(response => {
+      this.countries = response.data;
+    }).catch(error => this.$emit('error', error));
+  },
+  emits: [
+    'update:isVisible',
+    'success',
+    'error'
+  ],
+  watch: {
+    isVisible(newValue) {
+      this.createElectionTypeModalVisible = newValue;
     },
-    props: {
-      isVisible: {
-        type: Boolean,
-        required: true,
-      }
-    },
-    mounted() {
-      findAll().then(response => {
-        this.countries = response.data;
-      }).catch(error => this.$emit('error', error));
-    },
-    emits: [
-        'update:isVisible',
-        'success',
-        'error'
-    ],
-    watch: {
-      isVisible(newValue) {
-        this.createElectionTypeModalVisible = newValue;
+    createElectionTypeModalVisible(newValue) {
+      this.createElectionTypeModalVisible = newValue;
+      this.$emit('update:isVisible', newValue);
+    }
+  },
+  data() {
+    return {
+      createElectionTypeModalVisible: this.$props.isVisible,
+      newElectionType: {
+        name: undefined,
+        description: undefined,
+        country_id: undefined,
+        required_stages_count: undefined,
       },
-      createElectionTypeModalVisible(newValue) {
-        this.createElectionTypeModalVisible = newValue;
-        this.$emit('update:isVisible', newValue);
-      }
+      countries: [],
+    };
+  },
+  methods: {
+    saveData() {
+      create(this.newElectionType).then(response => {
+        this.$emit('success', response);
+      }).catch(error => {
+        this.$emit('error', error)
+      }).finally(() => {
+        this.createElectionTypeModalVisible = false;
+      });
     },
-    data() {
-      return {
-        createElectionTypeModalVisible: this.$props.isVisible,
-        newElectionType: {
-          name: undefined,
-          description: undefined,
-          country_id: undefined,
-          required_stages_count: undefined,
-        },
-        countries: [],
-      };
-    },
-    methods: {
-      saveData() {
-        create(this.newElectionType).then(response => {
-          this.$emit('success', response);
-        }).catch(error => {
-          this.$emit('error', error)
-        }).finally(() => {
-          this.createElectionTypeModalVisible = false;
-        });
-      },
-    },
-  };
+  },
+};
 </script>
 
 <style scoped>
